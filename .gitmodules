@@ -1,0 +1,6 @@
+[submodule "yml_to_tex"]
+	path = yml_to_tex
+	url = https://github.com/aljedaxi/yml_to_tex
+[submodule "jinja2_latexing"]
+	path = jinja2_latexing
+	url = https://github.com/aljedaxi/jinja2_latexing
