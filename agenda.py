@@ -10,10 +10,11 @@ import argparse
 
 TEMPLATE = "agenda.tex"
 
-def get_metadata(in_data):
-    for i, agendum in enumerate(in_data['agenda']):
-        if not isinstance(agendum['body'], str):
-            in_data['agenda'][i]['body'] = yml_to_tex.data_to_tex(agendum['body'], depth=1)
+def get_metadata(in_data, keys=('agenda',)):
+    for key in keys:
+        for i, agendum in enumerate(in_data[key]):
+            if not isinstance(agendum['body'], str):
+                in_data[key][i]['body'] = yml_to_tex.data_to_tex(agendum['body'], depth=1)
     return in_data
 
 def format_to_title_body(agenda_section):
@@ -28,10 +29,16 @@ def main(infiles=("vars.yml",), basic=False):
 
         in_data = yaml.safe_load(open(filename).read())
 
-        if basic:
-            in_data['agenda'] = format_to_title_body(in_data['agenda'])
+        if in_data['appendices']:
+            keys = ('agenda', 'appendices')
+        else:
+            keys = ('agenda')
 
-        META = get_metadata(in_data)
+        if basic:
+            for key in keys:
+                in_data[key] = format_to_title_body(in_data[key])
+
+        META = get_metadata(in_data, keys=keys)
 
         try:
             outfile = META['outfile']
